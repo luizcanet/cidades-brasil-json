@@ -3,6 +3,15 @@
 namespace LuizCanet\CidadesBrasil;
 
 /**
+ * Controls Json files updates.
+ *
+ * Setup states on creation. Loads data from IBGE website. And saves the result
+ * in a configurable Json file.
+ *
+ * @property array $states Holds the states acronyms in lowercase
+ *
+ * @property array $cities Holds the cities data loaded by state
+ *
  *
  */
 class Updater
@@ -14,11 +23,22 @@ class Updater
 
     public $cities = array();
 
+    /**
+     * Returns the list of states set.
+     *
+     * @return array
+     */
     function getStates()
     {
         return $this->states;
     }
 
+    /**
+     * Object constructor. Can be setted with an array of states acronyms.
+     * Defaults to array with all states defined by the Class.
+     *
+     * @param array $states
+     */
     function __construct($states = array())
     {
         if (count($states) == 0) {
@@ -28,6 +48,9 @@ class Updater
         }
     }
 
+    /**
+     * Loads cities data from IBGE and save it to $cities property of object.
+     */
     function loadCities()
     {
         foreach ($this->states as $state) {
@@ -38,6 +61,12 @@ class Updater
         }
     }
 
+    /**
+     * Parses the HTML data loaded from each state set. Is possible to set an
+     * other file by param.
+     *
+     * @param  string $file The path to file that will be written.
+     */
     function saveToJson($file = 'cities-br.json')
     {
         $parsed_cities = array();
